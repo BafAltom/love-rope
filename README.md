@@ -1,4 +1,4 @@
 love-rope
 =========
 
-A LÖVE game about rope torture
+A LÖVE game about ropes and physics
