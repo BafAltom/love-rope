@@ -14,8 +14,7 @@ function love.update(dt)
     rope:update(dt)
 
     for i, o in ipairs(obstacles) do
-        o:updateForces(dt)
-        o:updatePosition(dt)
+        o:update(dt)
     end
 end
 

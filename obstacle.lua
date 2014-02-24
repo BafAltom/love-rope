@@ -21,6 +21,12 @@ function obstacleClass.newObstacle()
     return obstacle
 end
 
+function obstacleClass.update(obstacle, dt)
+    obstacle:updateForces(dt)
+    obstacle:updatePosition(dt)
+    obstacle:updateOther(dt)
+end
+
 function obstacleClass.updateForces(obstacle, dt)
     obstacle.forceX = 0
     obstacle.forceY = 0
