@@ -1,4 +1,4 @@
 love-rope
 =========
 
-A LÖVE game about ropes and physics
+A LÖVE "game" based on a rope simulation.
