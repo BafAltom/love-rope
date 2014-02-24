@@ -185,7 +185,7 @@ function nodeClass.updateOther(node, dt)
         dotProductNew = dotProduct(vFaceX, vFaceY, vNewX, vNewY)
         --print(i, dotProductOld, dotProductNew)
         if (dotProductOld * dotProductNew < 0) then
-            print(node.id.."intersect"..i)
+            print(node.id.." intersect "..i)
         end
     end
 end
