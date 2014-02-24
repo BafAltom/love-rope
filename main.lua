@@ -37,6 +37,12 @@ function love.mousereleased(x, y, b)
     rope:mousereleased(x, y, b)
 end
 
+function love.keyreleased(k)
+    if k == "escape" then
+        love.event.quit()
+    end
+end
+
 function round(num, idp)
     local mult = 10^(idp or 0)
     return math.floor(num * mult + 0.5) / mult
