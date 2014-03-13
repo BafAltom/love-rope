@@ -161,31 +161,11 @@ function nodeClass.updateOther(node, dt)
 
     closestObstacle = findClosestOf(obstacles, node)
 
-    nbrPoints = (#closestObstacle.points)/2
-    for i=1, 2--[[2*(nbrPoints)]], 2 do
-        -- determine if node has passed through each face of the obstacle
-        -- this is done by computing if the old position of the node was left or right of the vector
-        -- then if the new position is left or right of the vector
-        -- if it switched position -> must check closer
-
-        j = i + 2
-        if (j > 2*nbrPoints) then
-            j = 1
-        end
-
-        obsPointX = closestObstacle.points[i]
-        obsPointY = closestObstacle.points[i+1]
-        obsOtherPointX = closestObstacle.points[j]
-        obsOtherPointY = closestObstacle.points[j+1]
-
-        vFaceX, vFaceY = bafaltomVector(obsPointX, obsPointY, obsOtherPointX, obsOtherPointY, 1) -- vector of the face of the obstacle
-        vOldX, vOldY = bafaltomVector(obsPointX, obsPointY, node.oldX, node.oldY, 1)
-        vNewX, vNewY = bafaltomVector(obsPointX, obsPointY, node.X, node.Y, 1)
-        dotProductOld = dotProduct(vFaceX, vFaceY, vOldX, vOldY)
-        dotProductNew = dotProduct(vFaceX, vFaceY, vNewX, vNewY)
-        --print(i, dotProductOld, dotProductNew)
-        if (dotProductOld * dotProductNew < 0) then
-            print(node.id.." intersect "..i)
+    if (closestObstacle) then
+        oldPos = {node.oldX, node.oldY}
+        newPos = {node.X, node.Y}
+        if (closestObstacle:intersectSegment(oldPos, newPos)) then
+            print(node.id.." intersects "..closestObstacle.id)
         end
     end
 end
