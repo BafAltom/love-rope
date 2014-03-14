@@ -7,7 +7,7 @@ class Rope
 
     new: =>
         ropeSegInitialSize = ropeSegSize + gravityFieldY/ropeSpringStrength
-        @nodes = LGM.EntitySet
+        @nodes = LGM.EntitySet()
         curId = nil
         for i = 1, numbSegment
             oldId = curId
@@ -54,14 +54,14 @@ class Rope
                 userNode.attractedByMouse = true
 
     mousereleased: (mx, my, b) =>
-    userNode = @closestNode(mx, my, mousePrecision)
-    if b == "l"
-        for node in @nodes\iter()
-            node.attractedByMouse = false
-    elseif b == "r" then
-        if (userNode) then
-            userNode.stuck = not userNode.stuck
-            userNode.speed = LGM.Vector(0, 0)
+        userNode = @closestNode(mx, my, mousePrecision)
+        if b == "l"
+            for node in @nodes\iter()
+                node.attractedByMouse = false
+        elseif b == "r" then
+            if (userNode) then
+                userNode.stuck = not userNode.stuck
+                userNode.speed = LGM.Vector(0, 0)
 
 
     make_link: (id1, id2) =>
