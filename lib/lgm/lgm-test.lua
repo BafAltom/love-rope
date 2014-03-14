@@ -1,3 +1,6 @@
+require("lgm-entity")
+require("lgm-vector")
+require("lgm-segment")
 do
   local e1 = Entity(10, 10)
   local e2 = Entity(10, 15)
@@ -16,6 +19,7 @@ end
 do
   local v1 = Vector(10, 0)
   local v2 = Vector(5, 5)
+  assert((v2:angle()) == -math.pi / 4, "angle is " .. tostring(v2:angle()) .. " not " .. tostring(math.pi / 4))
   assert((v1:angleWith(v2)) == math.pi / 4)
 end
 do

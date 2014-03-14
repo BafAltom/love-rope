@@ -1,3 +1,4 @@
+require("lgm-vector")
 do
   local _base_0 = {
     asVector = function(self)

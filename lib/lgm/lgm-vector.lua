@@ -23,12 +23,17 @@ do
     minus = function(self, v2)
       return v2:add((self:scalarProduct(-1)))
     end,
+    angle = function(self)
+      return self:angleWith(Vector(1, 0))
+    end,
     angleWith = function(self, v2)
       local a = math.atan2(v2.y, v2.x) - math.atan2(self.y, self.x)
       if a < -math.pi then
+        print("up")
         a = a + (2 * math.pi)
       end
       if a > math.pi then
+        print("down")
         a = a - (2 * math.pi)
       end
       return a
