@@ -8,10 +8,10 @@ class Obstacle extends LGM.Entity
         super x, y
         @speed = LGM.Vector(0, 0)
         @force = LGM.Vector(0, 0)
-        attractedByMouse = false
-        stuck = true
-        mass = 2
-        segments = {}  -- List of LGM.Segment
+        @attractedByMouse = false
+        @stuck = true
+        @mass = 2
+        @segments = {}  -- List of LGM.Segment
 
     points: =>
         pList = {}
@@ -97,8 +97,8 @@ class Obstacle extends LGM.Entity
     if b == "l"
         @attractedByMouse = false
 
-defaultObstacleList: ->
-    o = Obstacle 100, 100
+defaultObstacleList = ->
+    o = Obstacle(100, 100)
     oList = EntitySet()
     table.insert(o.segments, LGM.Segment(LGM.Entity(50, 50), LGM.Entity(150, 50)))
     table.insert(o.segments, LGM.Segment(LGM.Entity(150, 50), LGM.Entity(150, 150)))
