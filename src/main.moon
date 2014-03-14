@@ -1,3 +1,5 @@
+export ropePlayer, obstacles
+
 love.load = ->
     require "rope"
     require "variables"
