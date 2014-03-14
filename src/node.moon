@@ -19,7 +19,7 @@ class Node extends LGM.Entity
         system\setSpeed( 100, 150 )
         system\setDirection( math.rad(0) )
         system\setSpread( math.rad(45) )
-        system\setLinearAcceleration( gravityFieldX, 2 * gravityFieldY )
+        system\setLinearAcceleration( gravityField.x, 2 * gravityField.y )
         system\setRotation( math.rad(0), math.rad(0) )
         system\setSpin( math.rad(0.5), math.rad(1), 1 )
         system\setRadialAcceleration( 0 )

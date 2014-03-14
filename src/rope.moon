@@ -3,10 +3,12 @@ require("node")
 
 -- somewhat inspired by http://nehe.gamedev.net/tutorial/rope_physics/17006/
 
+export ^
+
 class Rope
 
     new: =>
-        ropeSegInitialSize = ropeSegSize + gravityFieldY/ropeSpringStrength
+        ropeSegInitialSize = ropeSegSize + gravityField.y/ropeSpringStrength
         @nodes = LGM.EntitySet()
         curId = nil
         for i = 1, numbSegment
@@ -15,7 +17,7 @@ class Rope
             @nodes\add(newNode)
             curId = newNode.id
             if (oldId) then
-                rope:make_link(curId, oldId)
+                @make_link(curId, oldId)
 
     closestNode: (x, y, maxDistance) =>
         targetEnt = LGM.Entity(x, y)
@@ -65,8 +67,8 @@ class Rope
 
 
     make_link: (id1, id2) =>
-        A = @nodes.find(id1)
-        B = @nodes.find(id2)
+        A = @nodes\find(id1)
+        B = @nodes\find(id2)
         table.insert(A.links, LGM.Segment(A, B))
         table.insert(B.links, LGM.Segment(B, A))
 
