@@ -21,6 +21,9 @@ do
       end
       local vecP = Vector(self.pB.x - p.x, self.pB.y - p.y)
       return self:asVector():isLeftTurn(vecP, strict)
+    end,
+    __tostring = function(self)
+      return "S(" .. tostring(self.pA) .. ", " .. tostring(self.pB) .. ")"
     end
   }
   _base_0.__index = _base_0

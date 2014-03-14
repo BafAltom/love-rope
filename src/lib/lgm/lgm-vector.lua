@@ -52,6 +52,9 @@ do
       else
         return (self:crossProduct(v2)) >= 0
       end
+    end,
+    __tostring = function(self)
+      return "V(" .. tostring(self.x) .. ", " .. tostring(self.y) .. ")"
     end
   }
   _base_0.__index = _base_0

@@ -10,6 +10,9 @@ do
     end,
     distanceTo = function(self, ent2)
       return lgm_distance(self.x, self.y, ent2.x, ent2.y)
+    end,
+    __tostring = function(self)
+      return "E(" .. tostring(self.X) .. ", " .. tostring(self.Y) .. ")"
     end
   }
   _base_0.__index = _base_0
