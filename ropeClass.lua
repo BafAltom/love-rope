@@ -1,43 +1,45 @@
-require("bafaltom2D")
+require("lib/lgm/lgm")
 
 -- somewhat inspired by http://nehe.gamedev.net/tutorial/rope_physics/17006/
 
 ropeClass = {}
 nodeClass = {}
 
-function ropeClass.make_link(G, n1, n2)
-    table.insert(G.nodes[n1].links, n2)
-    table.insert(G.nodes[n2].links, n1)
-    table.insert(G.nodes[n1].linksDistance, ropeSegSize)
-    table.insert(G.nodes[n2].linksDistance, ropeSegSize)
+function ropeClass.make_link(rope, n1, n2)
+    A = rope.nodes[n1]
+    B = rope.nodes[n2]
+    table.insert(A.links, LGM.Segment(A, B))
+    table.insert(B.links, LGM.Segment(B, A))
+    table.insert(A.linksDistance[B], ropeSegSize)
+    table.insert(B.linksDistance[A], ropeSegSize)
 end
 
-function ropeClass.unlink(G, n1, n2)
-    local _node1 = G.nodes[n1]
-    local _node2 = G.nodes[n2]
-    local _pos1 = 0
-    local _pos2 = 0
+function ropeClass.unlink(rope, n1, n2)
+    local A = rope.nodes[n1]
+    local B = rope.nodes[n2]
+    local posA = 0
+    local posB = 0
 
     -- find pos1 and pos2
-    for i = 1, #_node1.links do
-        if (_node1.links[i] == n2) then
-            _pos1 = i
+    for i, s in ipairs(A.links) do
+        if (s.pB == B) then
+            posA = i
             break
         end
     end
-    for i = 1, #_node2.links do
-        if (_node2.links[i] == n1) then
-            _pos2 = i
+    for i, s in ipairs(B.links) do
+        if (s.pB == A) then
+            posB = i
             break
         end
     end
 
-    if (_pos1 == 0 and _pos2 == 0) then print("unlink : link "..n1..", "..n2.." did not exist") end
+    if (posA == 0 and posB == 0) then print("unlink : link "..n1..", "..n2.." did not exist") end
 
-    table.remove(_node1.links, _pos1)
-    table.remove(_node2.links, _pos2)
-    table.remove(_node1.linksDistance, _pos1)
-    table.remove(_node2.linksDistance, _pos2)
+    table.remove(A.links, posA)
+    table.remove(B.links, posB)
+    A.linksDistance[B] = nil
+    B.linksDistance[A] = nil
 end
 
 function nodeClass.newBloodPS()
@@ -71,10 +73,8 @@ function nodeClass.newNode()
         oldY = 0,
         getX = function(node) return node.X end,
         getY = function(node) return node.Y end,
-        speedX = 0,
-        speedY = 0,
-        forceX = 0,
-        forceY = 0,
+        speedV = LGM.Vector(0, 0)
+        forceV = LGM.Vector(0, 0)
         attractedByMouse = false,
         stuck = false,
         mass = 2,
@@ -87,35 +87,29 @@ function nodeClass.newNode()
 end
 
 function nodeClass.updateForces(node, dt, linksToRemove)
-    node.forceX = 0
-    node.forceY = 0
+    node.totalF = LGM.Vector(0, 0)
 
-    springX, springY = 0, 0
-    for j = 1, #node.links do
-        linkId = node.links[j]
-        linkN = rope.nodes[linkId]
-
-        distJ = distance2Entities(node, linkN)
-        node.linksDistance[j] = distJ
-        if (distJ > segmentBreakDistance) then
-            print("must remove "..node.id.." , "..linkN.id)
-            table.insert(linksToRemove, {node.id, linkN.id})
+    springF = LGM.Vector(0, 0)
+    for i, seg in ipairs(node.links) do
+        otherNode = seg.pB
+        distOther = LGM.distance(node.X, node.Y, otherNode.X, otherNode.Y)
+        node.linksDistance[otherNode] = distOther
+        if (distOther > segmentBreakDistance) then
+            print("must remove "..node.id.." , "..otherNode.id)
+            table.insert(linksToRemove, {node.id, otherNode.id})
         else
-            normSpringJ = ropeSpringStrength*(distJ - ropeSegSize)
-            springJ_x, springJ_y = bafaltomVector(node.X, node.Y, linkN.X, linkN.Y, normSpringJ)
-            springX = springX + springJ_x
-            springY = springY + springJ_y
+            normSpring = ropeSpringStrength * (distOther - ropeSegSize)
+            linkSpringV = LGM.Vector(otherNode.X - node.X, otherNode.Y - node.Y)
+            linkSpringV:setNorm(normSpring)
+            springF = springF:add(linkSpringV)
         end
     end
 
-    frictionX = - (friction * node.speedX)
-    frictionY = - (friction * node.speedY)
+    frictionF = LGM.Vector(- (friction * node.speed.x), - (friction * node.speed.y))
 
-    gravityX = gravityFieldX * node.mass
-    gravityY = gravityFieldY * node.mass
+    gravityF = LGM.Vector(gravityFieldX * node.mass, gravityFieldY * node.mass)
 
-    node.forceX = springX + frictionX + gravityX
-    node.forceY = springY + frictionY + gravityY
+    node.forceV = node.forceV:add(springF:add(frictionF:add(gravityF)))
 end
 
 function nodeClass.updatePosition(node, dt)
@@ -123,35 +117,36 @@ function nodeClass.updatePosition(node, dt)
     if (not node.stuck) then
         if (node.attractedByMouse) then
             mx, my = love.mouse.getPosition()
-            distMouse = distance2Points(mx, my, node.X, node.Y)
+            distMouse = LGM.distance(mx, my, node.X, node.Y)
             if (distMouse < speedUserNode * dt) then
                 node.X, node.Y = mx, my
-                node.speedX, node.speedY = 0, 0
+                node.speedV = LGM.Vector(0, 0)
             else
-                node.speedX, node.speedY = bafaltomVector(node.X, node.Y, mx, my, speedUserNode)
+                node.speedV = LGM.Vector(mx - node.X, my - node.Y)
+                node.speedV:setNorm(speedUserNode)
             end
         else
-            node.speedX = node.speedX + dt * node.forceX / node.mass
-            node.speedY = node.speedY + dt * node.forceY / node.mass
+            node.speedV.x = node.speedV.x + dt * node.forceV.x / node.mass
+            node.speedV.y = node.speedV.y + dt * node.forceV.y / node.mass
         end
 
         if node:getX() < 0 then
-            node.speedX = math.abs(node.speedX)
+            node.speedV.x = math.abs(node.speedV.x)
         elseif node:getX() > wScr then
-            node.speedX = -1*math.abs(node.speedX)
+            node.speedV.x = -1 * math.abs(node.speedV.x)
         end
         if node:getY() < 0 then
-            node.speedY = math.abs(node.speedY)
+            node.speedV.y = math.abs(node.speedV.y)
         elseif node:getY() > hScr then
-            node.speedY = -1*math.abs(node.speedY)
+            node.speedV.y = -1*math.abs(node.speedV.y)
         end
 
-        if (distance2Points(0, 0, node.speedX, node.speedY) > maxSpeedNode) then
-            node.speedX, node.speedY = bafaltomVector(0, 0, node.speedX, node.speedY, maxSpeedNode)
+        if (node.speedV:norm() > maxSpeedNode) then
+            node.speedV:setNorm(maxSpeedNode)
         end
 
-        node.X = node.X + node.speedX*dt
-        node.Y = node.Y + node.speedY*dt
+        node.X = node.X + node.speedV.x*dt
+        node.Y = node.Y + node.speedV.y*dt
     end
 end
 
@@ -162,9 +157,9 @@ function nodeClass.updateOther(node, dt)
     closestObstacle = findClosestOf(obstacles, node)
 
     if (closestObstacle) then
-        oldPos = {node.oldX, node.oldY}
-        newPos = {node.X, node.Y}
-        if (closestObstacle:intersectSegment(oldPos, newPos)) then
+        oldPos = LGM.Entity(node.oldX, node.oldY)
+        newPos = LGM.Entity(node.X, node.Y)
+        if (closestObstacle:intersectSegment(LGM.Segment(oldPos, newPos))) then
             print(node.id.." intersects "..closestObstacle.id)
         end
     end
@@ -181,14 +176,13 @@ function nodeClass.draw(node)
     love.graphics.setColor(255,0,0) -- ghost
     love.graphics.circle("line", node.oldX, node.oldY, node.mass)
     love.graphics.setColor(255,255,255)
-    for j = 1, #node.links do
-        linkId = node.links[j]
-        linkN = rope.nodes[linkId]
-        stretchFactor = node.linksDistance[j]/segmentBreakDistance
+    for i, seg in ipairs(node.links) do
+        otherNode = seg.pB
+        stretchFactor = seg:norm()/segmentBreakDistance
         stretchFactor = math.max(0, stretchFactor)
         stretchFactor = math.min(1, stretchFactor)
         love.graphics.setColor(255, 255 * (1 - stretchFactor), 255 * (1 - stretchFactor))
-        love.graphics.line(node.X, node.Y, linkN.X, linkN.Y)
+        love.graphics.line(node.X, node.Y, otherNode.X, otherNode.Y)
     end
     if(DEBUG) then
         love.graphics.print(node.id, node.X, node.Y)
@@ -237,7 +231,7 @@ function ropeClass.update(rope, dt)
     end
 
 
-    -- displacement are done once all force have been computed
+    -- displacement are done once all forces have been computed
     for i=1,#rope.nodes do
         rope.nodes[i]:updatePosition(dt)
         rope.nodes[i]:updateOther(dt)
