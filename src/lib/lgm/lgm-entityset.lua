@@ -1,6 +1,8 @@
-local EntitySet
 do
   local _base_0 = {
+    size = function(self)
+      return #self.entList
+    end,
     nextID = function(self)
       self.currentID = self.currentID + 1
       return self.currentID

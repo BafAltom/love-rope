@@ -1,8 +1,9 @@
-require("lib/lgm/lgm-base")
-require("lib/lgm/lgm-entity")
-require("lib/lgm/lgm-entityset")
-require("lib/lgm/lgm-segment")
-require("lib/lgm/lgm-vector")
+lgm_path = "./lib/lgm/"
+require(tostring(lgm_path) .. "lgm-base")
+require(tostring(lgm_path) .. "lgm-entity")
+require(tostring(lgm_path) .. "lgm-entityset")
+require(tostring(lgm_path) .. "lgm-segment")
+require(tostring(lgm_path) .. "lgm-vector")
 LGM = {
   distance = lgm_distance,
   Entity = Entity,

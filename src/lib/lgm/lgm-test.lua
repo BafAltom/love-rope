@@ -1,6 +1,7 @@
-require("lib/lgm/lgm-entity")
-require("lib/lgm/lgm-vector")
-require("lib/lgm/lgm-segment")
+lgm_path = "./"
+require(tostring(lgm_path) .. "lgm-entity")
+require(tostring(lgm_path) .. "lgm-vector")
+require(tostring(lgm_path) .. "lgm-segment")
 do
   local e1 = Entity(10, 10)
   local e2 = Entity(10, 15)

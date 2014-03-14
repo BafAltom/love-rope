@@ -1,4 +1,4 @@
-require("lib/lgm/lgm-vector")
+require(tostring(lgm_path) .. "lgm-vector")
 do
   local _base_0 = {
     asVector = function(self)
