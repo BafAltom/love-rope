@@ -6,6 +6,18 @@ export ^
 
 class Node extends LGM.Entity
 
+    new: (x, y) =>
+        super(x, y)
+        @oldX = 0
+        @oldY = 0
+        @speed = LGM.Vector(0, 0)
+        @force = LGM.Vector(0, 0)
+        @attractedByMouse = false
+        @stuck = false
+        @mass = 2
+        @links = {}
+        @bloodPS = @newBloodPS()
+
     newBloodPS: =>
         system = love.graphics.newParticleSystem(img_blood, 75)
         system\setPosition( 0, 0 )
@@ -27,29 +39,20 @@ class Node extends LGM.Entity
         system\pause()
         return system
 
-    new: (x, y) =>
-        super(x, y)
-        @oldX = 0
-        @oldY = 0
-        @speed = LGM.Vector(0, 0)
-        @force = LGM.Vector(0, 0)
-        @attractedByMouse = false
-        @stuck = false
-        @mass = 2
-        @links = {}
-        @bloodPS = @newBloodPS()
+    __tostring: =>
+        return super()
 
     updateForces: (dt, linksToRemove) =>
         springForce = LGM.Vector(0, 0)
         for i, seg in ipairs(@links) do
             otherNode = seg.pB
-            distOther = LGM.distance(@X, @Y, otherNode.X, otherNode.Y)
+            distOther = LGM.distance(@x, @y, otherNode.x, otherNode.y)
             if (distOther > segmentBreakDistance)
                 print("must remove "..@id.." , "..otherNode.id)
                 table.insert(linksToRemove, {@, otherNode})
             else
                 normSpring = ropeSpringStrength * (distOther - ropeSegSize)
-                linkSpringF = LGM.Vector(otherNode.X - @X, otherNode.Y - @Y)
+                linkSpringF = LGM.Vector(otherNode.x - @x, otherNode.y - @y)
                 linkSpringF\setNorm(normSpring)
                 springForce = springForce\add(linkSpringF)
 
@@ -63,12 +66,12 @@ class Node extends LGM.Entity
         if (not @stuck) then
             if (@attractedByMouse) then
                 mx, my = love.mouse.getPosition()
-                distMouse = LGM.distance(mx, my, @X,  @Y)
+                distMouse = LGM.distance(mx, my, @x,  @y)
                 if (distMouse < speedUserNode * dt)
-                    @X, @Y = mx, my
+                    @x, @y = mx, my
                     @speed = LGM.Vector(0, 0)
                 else
-                    @speed = LGM.Vector(mx - @X, my - @Y)
+                    @speed = LGM.Vector(mx - @x, my - @y)
                     @speed\setNorm(speedUserNode)
             else
                 -- speed += acceleration * dt
@@ -87,8 +90,8 @@ class Node extends LGM.Entity
             if @speed\norm() > maxSpeedobstacle then
                 @speed:setNorm(maxSpeedobstacle)
 
-            @X += @speed.x * dt
-            @Y += @speed.y * dt
+            @x += @speed.x * dt
+            @y += @speed.y * dt
 
     updateOther: (dt) =>
         @bloodPS\setPosition(@getX(), @getY())
@@ -98,7 +101,7 @@ class Node extends LGM.Entity
 
         if (closestObstacle) then
             oldPos = LGM.Entity(@oldX, @oldY)
-            newPos = LGM.Entity(@X, @Y)
+            newPos = LGM.Entity(@x, @y)
             movementSeg = LGM.Segment(oldPos, newPos)
             if (closestObstacle\intersectSegment(movementSeg)) then
                 print(node.id.." intersects "..closestObstacle.id)
@@ -107,7 +110,7 @@ class Node extends LGM.Entity
         love.graphics.draw(@bloodPS)
         fillage = if @stuck then "fill" else "line"
         love.graphics.setColor(255,255,255)
-        love.graphics.circle(fillage, node.X, node.Y, node.mass)
+        love.graphics.circle(fillage, node.x, node.y, node.mass)
         love.graphics.setColor(255,0,0) -- ghost
         love.graphics.circle("line", node.oldX, node.oldY, node.mass)
         love.graphics.setColor(255,255,255)
@@ -117,7 +120,7 @@ class Node extends LGM.Entity
             stretchFactor = math.max(0, stretchFactor)
             stretchFactor = math.min(1, stretchFactor)
             love.graphics.setColor(255, 255 * (1 - stretchFactor), 255 * (1 - stretchFactor))
-            love.graphics.line(@X, @Y, otherNode.X, otherNode.Y)
+            love.graphics.line(@x, @y, otherNode.x, otherNode.y)
         if(DEBUG) then
-            love.graphics.print(@id, @X, @Y)
+            love.graphics.print(@id, @x, @y)
 

@@ -41,10 +41,10 @@ class Obstacle extends LGM.Entity
                 mx, my = love.mouse.getPosition()
                 distMouse = LGM.distance(mx, my, @getX!, @getY!)
                 if (distMouse < speedUserobstacle * dt) then
-                    @X, @Y = mx, my
+                    @x, @y = mx, my
                     @speed = LGM.Vector(0, 0)
                 else
-                    @speed = LGM.Vector(mx - @X, my - @Y)
+                    @speed = LGM.Vector(mx - @x, my - @y)
                     @speed\setNorm(speedUserobstacle)
             else
                 -- speed += acceleration * dt
@@ -63,8 +63,8 @@ class Obstacle extends LGM.Entity
             if @speed\norm() > maxSpeedobstacle then
                 @speed:setNorm(maxSpeedobstacle)
 
-            @X += @speed.x * dt
-            @Y += @speed.y * dt
+            @x += @speed.x * dt
+            @y += @speed.y * dt
 
     updateOther: (dt) =>
 
