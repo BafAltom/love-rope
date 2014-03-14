@@ -73,7 +73,7 @@ function bafaltomAddVectors(...)
 end
 
 function dotProduct(v1x, v1y, v2x, v2y)
-	return v1x*v2x + v1y + v2y
+	return v1x*v2x + v1y*v2y
 end
 
 function bafaltomAngle(x1, y1, x2, y2)
