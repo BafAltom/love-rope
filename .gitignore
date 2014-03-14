@@ -1,2 +1,3 @@
 *.lua~
 rope.sublime-workspace
+gen_love/*

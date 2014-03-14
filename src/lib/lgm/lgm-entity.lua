@@ -1,4 +1,4 @@
-require("lgm-base")
+require("lib/lgm/lgm-base")
 do
   local getClosestOf
   local _base_0 = {

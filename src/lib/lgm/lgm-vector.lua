@@ -1,3 +1,4 @@
+require("lib/lgm/lgm-base")
 do
   local _base_0 = {
     copy = function(self)

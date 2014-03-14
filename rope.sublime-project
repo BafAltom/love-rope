@@ -4,17 +4,9 @@
         {
             "follow_symlinks": true,
             "path": "./",
-            "name": "RÖPE",
-            "file_exclude_patterns": ["*.png", "*.gif", "*.gal", "*.xcf"],
-            "folder_exclude_patterns": ["res"]
-        }
-    ],
-    "build_systems":
-    [
-        {
-            "name": "LÖVE",
-            "cmd": ["love", "./"],
-            "selector": "source.lua"
+            "name": "RÖPE"
+            // "file_exclude_patterns": [""],
+            // "folder_exclude_patterns": []
         }
     ]
 }
