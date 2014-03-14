@@ -4,7 +4,7 @@ love.load = ->
     require "resources"
     require "obstacle"
 
-    ropePlayer = Rope!
+    ropePlayer = Rope()
     obstacles = defaultObstacleList()
 
 love.update = (dt) ->
