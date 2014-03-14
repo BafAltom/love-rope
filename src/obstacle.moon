@@ -36,35 +36,35 @@ class Obstacle extends LGM.Entity
         @force = friction\add(gravity)
 
     updatePosition: (dt) =>
-    if (not @stuck) then
-        if (@attractedByMouse) then
-            mx, my = love.mouse.getPosition()
-            distMouse = LGM.distance(mx, my, @getX!, @getY!)
-            if (distMouse < speedUserobstacle * dt) then
-                @X, @Y = mx, my
-                @speed = LGM.Vector(0, 0)
+        if (not @stuck) then
+            if (@attractedByMouse) then
+                mx, my = love.mouse.getPosition()
+                distMouse = LGM.distance(mx, my, @getX!, @getY!)
+                if (distMouse < speedUserobstacle * dt) then
+                    @X, @Y = mx, my
+                    @speed = LGM.Vector(0, 0)
+                else
+                    @speed = LGM.Vector(mx - @X, my - @Y)
+                    @speed\setNorm(speedUserobstacle)
             else
-                @speed = LGM.Vector(mx - @X, my - @Y)
-                @speed\setNorm(speedUserobstacle)
-        else
-            -- speed += acceleration * dt
-            -- acceleration = force / mass
-            @speed = @speed\add(@force\scalarProduct(dt / @mass))
+                -- speed += acceleration * dt
+                -- acceleration = force / mass
+                @speed = @speed\add(@force\scalarProduct(dt / @mass))
 
-        if @getX() < 0 then
-            @speed.x = math.abs(@speed.x)
-        elseif @getX() > wScr() then
-            @speed.x = -1 * math.abs(@speed.x)
-        if @getY() < 0 then
-            @speed.y = math.abs(@speed.y)
-        elseif @getY() > hScr() then
-            @speed.y = -1 * math.abs(@speed.y)
+            if @getX() < 0 then
+                @speed.x = math.abs(@speed.x)
+            elseif @getX() > wScr() then
+                @speed.x = -1 * math.abs(@speed.x)
+            if @getY() < 0 then
+                @speed.y = math.abs(@speed.y)
+            elseif @getY() > hScr() then
+                @speed.y = -1 * math.abs(@speed.y)
 
-        if @speed\norm() > maxSpeedobstacle then
-            @speed:setNorm(maxSpeedobstacle)
+            if @speed\norm() > maxSpeedobstacle then
+                @speed:setNorm(maxSpeedobstacle)
 
-        @X += @speed.x * dt
-        @Y += @speed.y * dt
+            @X += @speed.x * dt
+            @Y += @speed.y * dt
 
     updateOther: (dt) =>
 
