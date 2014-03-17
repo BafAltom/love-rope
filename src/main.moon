@@ -25,10 +25,10 @@ love.draw = ->
         o\draw()
 
 love.mousepressed = (x, y, b) ->
-    rope\mousepressed(x, y, b)
+    ropePlayer\mousepressed(x, y, b)
 
 love.mousereleased = (x, y, b) ->
-    rope\mousereleased(x, y, b)
+    ropePlayer\mousereleased(x, y, b)
 
 love.keyreleased = (k) ->
     if k == "escape" then
