@@ -10,7 +10,6 @@ love.load = ->
     obstacles = defaultObstacleList()
 
 love.update = (dt) ->
-    FPS = 1/dt
     --love.timer.sleep(0.1)
     ropePlayer\update dt
 
@@ -19,7 +18,7 @@ love.update = (dt) ->
 
 love.draw = ->
     love.graphics.setColor(255,255,255)
-    love.graphics.print("FPS: "..round(FPS), 10, 10)
+    love.graphics.print("FPS: "..round(love.timer.getFPS()), 10, 10)
     ropePlayer\draw()
 
     for i, o in ipairs(obstacles) do
@@ -35,6 +34,6 @@ love.keyreleased = (k) ->
     if k == "escape" then
         love.event.quit()
 
-round = (num, idp) ->
+export round = (num, idp) ->
     mult = 10^(idp or 0)
     return math.floor(num * mult + 0.5) / mult
