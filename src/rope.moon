@@ -21,7 +21,7 @@ class Rope
 
     closestNode: (x, y, maxDistance) =>
         targetEnt = LGM.Entity(x, y)
-        findClosestOf(@nodes\as_list(), targetEnt, maxDistance)
+        targetEnt\getClosestOf(@nodes\as_list(), maxDistance)
 
     update: (dt) =>
         linksToRemove = {} -- contains pairs of node ids
