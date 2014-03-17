@@ -15,7 +15,7 @@ class Node extends LGM.Entity
         @attractedByMouse = false
         @stuck = false
         @mass = 2
-        @links = {}
+        @links = {}  -- list of adjacent nodes
         @bloodPS = @newBloodPS()
 
     newBloodPS: =>
@@ -44,12 +44,11 @@ class Node extends LGM.Entity
 
     updateForces: (dt, linksToRemove) =>
         springForce = LGM.Vector(0, 0)
-        for i, seg in ipairs(@links) do
-            otherNode = seg.pB
+        for i, otherNode in ipairs(@links) do
             distOther = LGM.distance(@x, @y, otherNode.x, otherNode.y)
             if (distOther > segmentBreakDistance)
                 print("must remove "..@id.." , "..otherNode.id)
-                table.insert(linksToRemove, {@, otherNode})
+                table.insert(linksToRemove, {@id, otherNode.id})
             else
                 normSpring = ropeSpringStrength * (distOther - ropeSegSize)
                 linkSpringF = LGM.Vector(otherNode.x - @x, otherNode.y - @y)
@@ -114,9 +113,9 @@ class Node extends LGM.Entity
         love.graphics.setColor(255,0,0) -- ghost
         love.graphics.circle("line", @oldX, @oldY, @mass)
         love.graphics.setColor(255,255,255)
-        for i, seg in ipairs(@links)
-            otherNode = seg.pB
-            stretchFactor = seg\norm() / segmentBreakDistance
+        for i, otherNode in ipairs(@links)
+            distance = LGM.distance(@x, @y, otherNode.x, otherNode.y)
+            stretchFactor = distance / segmentBreakDistance
             stretchFactor = math.max(0, stretchFactor)
             stretchFactor = math.min(1, stretchFactor)
             love.graphics.setColor(255, 255 * (1 - stretchFactor), 255 * (1 - stretchFactor))

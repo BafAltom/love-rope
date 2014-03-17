@@ -67,10 +67,10 @@ class Rope
 
 
     make_link: (id1, id2) =>
-        A = @nodes\find(id1)
-        B = @nodes\find(id2)
-        table.insert(A.links, LGM.Segment(A, B))
-        table.insert(B.links, LGM.Segment(B, A))
+        pA = @nodes\find(id1)
+        pB = @nodes\find(id2)
+        table.insert(pA.links, pB)
+        table.insert(pB.links, pA)
 
     unlink: (id1, id2) =>
         A = @nodes.find(id1)
@@ -79,12 +79,12 @@ class Rope
         posB = 0
 
         -- find pos1 and pos2
-        for i, s in ipairs(A.links) do
-            if (s.pB == B) then
+        for i, node in ipairs(A.links) do
+            if (node == B) then
                 posA = i
                 break
-        for i, s in ipairs(B.links) do
-            if (s.pB == A) then
+        for i, node in ipairs(B.links) do
+            if (node == A) then
                 posB = i
                 break
 
