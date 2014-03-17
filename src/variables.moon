@@ -9,6 +9,7 @@ friction = 1.2
 userStrength = 800
 speedUserNode = 2000
 maxSpeedNode = 1000
+maxSpeedObstacle = 1000
 
 numbSegment = 10
 ropeSegSize = 20
