@@ -3,8 +3,11 @@ require(tostring(lgm_path) .. "lgm-entity")
 require(tostring(lgm_path) .. "lgm-vector")
 require(tostring(lgm_path) .. "lgm-segment")
 do
-  local e1 = Entity(10, 10)
-  local e2 = Entity(10, 15)
+  local e1 = Entity(0, 0)
+  local e2 = Entity(3, 5)
+  assert((e1:distanceTo(e2)) == math.sqrt(3 * 3 + 5 * 5), "distance Test Failed: " .. tostring(e1:distanceTo(e2)))
+  e1 = Entity(10, 10)
+  e2 = Entity(10, 15)
   assert((e1:distanceTo(e2)) == 5, "distance Test Failed: " .. tostring(e1:distanceTo(e2)) .. " != 5")
 end
 do
