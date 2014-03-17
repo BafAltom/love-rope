@@ -87,8 +87,8 @@ class Node extends LGM.Entity
             elseif @getY() > hScr() then
                 @speed.y = -1 * math.abs(@speed.y)
 
-            if @speed\norm() > maxSpeedobstacle then
-                @speed:setNorm(maxSpeedobstacle)
+            if @speed\norm() > maxSpeedObstacle then
+                @speed:setNorm(maxSpeedObstacle)
 
             @x += @speed.x * dt
             @y += @speed.y * dt
@@ -97,22 +97,22 @@ class Node extends LGM.Entity
         @bloodPS\setPosition(@getX(), @getY())
         @bloodPS\update(dt)
 
-        closestObstacle = @getClosestOf(obstacles\as_list)
+        closestObstacle = @getClosestOf(obstacles\as_list())
 
         if (closestObstacle) then
             oldPos = LGM.Entity(@oldX, @oldY)
             newPos = LGM.Entity(@x, @y)
             movementSeg = LGM.Segment(oldPos, newPos)
             if (closestObstacle\intersectSegment(movementSeg)) then
-                print(node.id.." intersects "..closestObstacle.id)
+                print(@id.." intersects "..closestObstacle.id)
 
     draw: =>
         love.graphics.draw(@bloodPS)
         fillage = if @stuck then "fill" else "line"
         love.graphics.setColor(255,255,255)
-        love.graphics.circle(fillage, node.x, node.y, node.mass)
+        love.graphics.circle(fillage, @getX(), @getY(), @mass)
         love.graphics.setColor(255,0,0) -- ghost
-        love.graphics.circle("line", node.oldX, node.oldY, node.mass)
+        love.graphics.circle("line", @oldX, @oldY, @mass)
         love.graphics.setColor(255,255,255)
         for i, seg in ipairs(@links)
             otherNode = seg.pB
