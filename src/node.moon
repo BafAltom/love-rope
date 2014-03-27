@@ -73,8 +73,8 @@ class Node extends LGM.Entity
                     @speed = LGM.Vector(mx - @x, my - @y)
                     @speed\setNorm(speedUserNode)
             else
-                -- speed += acceleration * dt
-                -- acceleration = force / mass
+                -- we apply speed += acceleration * dt
+                -- with acceleration = force / mass
                 @speed = @speed\add(@force\scalarProduct(dt / @mass))
 
             if @getX() < 0 then
