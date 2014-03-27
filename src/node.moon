@@ -86,8 +86,8 @@ class Node extends LGM.Entity
             elseif @getY() > hScr() then
                 @speed.y = -1 * math.abs(@speed.y)
 
-            if @speed\norm() > maxSpeedObstacle then
-                @speed:setNorm(maxSpeedObstacle)
+            if @speed\norm() > maxSpeedNode then
+                @speed:setNorm(maxSpeedNode)
 
             @x += @speed.x * dt
             @y += @speed.y * dt
