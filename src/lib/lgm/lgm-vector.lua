@@ -22,7 +22,7 @@ do
       return Vector(self.x + v2.x, self.y + v2.y)
     end,
     minus = function(self, v2)
-      return v2:add((self:scalarProduct(-1)))
+      return v2:add(self:scalarProduct(-1))
     end,
     angle = function(self)
       return self:angleWith(Vector(1, 0))

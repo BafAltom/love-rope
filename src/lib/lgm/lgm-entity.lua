@@ -1,4 +1,5 @@
 require(tostring(lgm_path) .. "lgm-base")
+require(tostring(lgm_path) .. "lgm-vector")
 do
   local _base_0 = {
     getX = function(self)
@@ -9,6 +10,9 @@ do
     end,
     __tostring = function(self)
       return "E(" .. tostring(self.x) .. ", " .. tostring(self.y) .. ")"
+    end,
+    toVector = function(self)
+      return Vector(self.x, self.y)
     end,
     distanceTo = function(self, ent2)
       return lgm_distance(self.x, self.y, ent2.x, ent2.y)

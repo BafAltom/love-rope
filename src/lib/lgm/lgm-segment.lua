@@ -12,7 +12,7 @@ do
       local v2 = seg2:asVector()
       local seg2CheckA = v2:isLeftTurn(self.pA:minus(seg2.pB))
       local seg2CheckB = v2:isLeftTurn(self.pB:minus(seg2.pB))
-      local seg2Check = seg2CheckA ~= seg2CheckB
+      local seg2Check = (seg2CheckA ~= seg2CheckB)
       return seg1Check and seg2Check
     end,
     isLeft = function(self, p, strict)

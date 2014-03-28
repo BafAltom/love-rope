@@ -80,16 +80,24 @@ end
 do
   local seg1 = Segment(Vector(-1, 0), Vector(1, 0))
   local seg2 = Segment(Vector(0, -1), Vector(0, 1))
-  assert(seg1:intersect(seg2, "Segment Intersection failed"))
+  assert(seg1:intersect(seg2), "Segment Intersection failed")
 end
 do
   local seg1 = Segment(Vector(3, 10), Vector(17, 56))
   local seg2 = Segment(Vector(0, -1), Vector(-12, 207))
-  assert(not seg1:intersect(seg2, "Segment Intersection failed"))
+  assert(not seg1:intersect(seg2), "Segment Intersection failed")
 end
 do
   local seg1 = Segment(Vector(-200, -200), Vector(700, 700))
   local seg2 = Segment(Vector(-0.5, 0), Vector(0.5, 0))
-  assert(seg1:intersect(seg2, "Segment Intersection failed"))
+  assert(seg1:intersect(seg2), "Segment Intersection failed")
 end
-return print("All test passed!")
+do
+  assert(is_nan(0 / 0))
+  assert(is_nan(-0 / 0))
+  assert(is_nan((-1) ^ .5))
+  assert(not is_nan(1))
+  assert(not is_nan(0))
+  assert(not is_nan(false))
+end
+return print("All tests have passed!")
