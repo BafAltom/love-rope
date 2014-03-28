@@ -37,6 +37,26 @@ do
   assert((v1:angleWith(v2)) == -1 * math.pi / 4)
 end
 do
+  local v1 = Vector(1, 1)
+  local v2 = v1:scalarProduct(2)
+  assert((v2.x == 2 and v2.y == 2), tostring(v2))
+end
+do
+  local v1 = Vector(0, 20)
+  local v2 = v1:scalarProduct(-1.5)
+  assert((v2.x == 0 and v2.y == -30), tostring(v2))
+end
+do
+  local v1 = Vector(180, 243)
+  local v2 = v1:scalarProduct(5.25)
+  assert((v2.x == 945 and v2.y == 1275.75), tostring(v2))
+end
+do
+  local v1 = Vector(0, 0)
+  local v2 = v1:scalarProduct(4)
+  assert((v2.x == 0 and v2.y == 0), tostring(v2))
+end
+do
   local v1 = Vector(0, 10)
   local v2 = Vector(0, 20)
   assert((v1:dotProduct(v2)) == 200)

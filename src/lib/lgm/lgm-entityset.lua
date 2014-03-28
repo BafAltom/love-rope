@@ -35,7 +35,7 @@ do
       for n, e in ipairs(self.entList) do
         if e.id == id then
           table.remove(self.entList, n)
-          return 
+          break
         end
       end
     end

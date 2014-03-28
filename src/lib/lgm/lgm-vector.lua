@@ -9,13 +9,16 @@ do
     end,
     setNorm = function(self, newNorm)
       local curNorm = self:norm()
+      assert(curNorm ~= 0, "setNorm: current norm is 0")
       local normFactor = newNorm / curNorm
       self.x = self.x * normFactor
       self.y = self.y * normFactor
     end,
     scalarProduct = function(self, number)
       local newV = self:copy()
-      newV:setNorm(self:norm() * number)
+      if self:norm() > 0 then
+        newV:setNorm(self:norm() * number)
+      end
       return newV
     end,
     add = function(self, v2)
