@@ -100,10 +100,10 @@ class Obstacle extends LGM.Entity
 defaultObstacleList = ->
     o = Obstacle(100, 100)
     oList = EntitySet()
-    table.insert(o.segments, LGM.Segment(LGM.Entity(50, 50), LGM.Entity(150, 50)))
-    table.insert(o.segments, LGM.Segment(LGM.Entity(150, 50), LGM.Entity(150, 150)))
-    table.insert(o.segments, LGM.Segment(LGM.Entity(150, 150), LGM.Entity(50, 150)))
-    table.insert(o.segments, LGM.Segment(LGM.Entity(150, 150), LGM.Entity(50, 50)))
+    -- table.insert(o.segments, LGM.Segment(LGM.Entity(50, 50), LGM.Entity(150, 50)))
+    -- table.insert(o.segments, LGM.Segment(LGM.Entity(150, 50), LGM.Entity(150, 150)))
+    -- table.insert(o.segments, LGM.Segment(LGM.Entity(150, 150), LGM.Entity(50, 150)))
+    -- table.insert(o.segments, LGM.Segment(LGM.Entity(150, 150), LGM.Entity(50, 50)))
 
     oList\add(o)
     return oList
