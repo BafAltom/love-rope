@@ -55,10 +55,10 @@ class Node extends LGM.Entity
                 linkSpringF\setNorm(normSpring)
                 springForce = springForce\add(linkSpringF)
 
-        friction = @speed\scalarProduct(-friction)
-        gravity = gravityField\scalarProduct(@mass)
+        frictionForce = @speed\scalarProduct(-frictionFactor)
+        gravityForce = gravityField\scalarProduct(@mass)
 
-        @force = springForce\add(friction\add(gravity))
+        @force = springForce\add(frictionForce\add(gravityForce))
 
     updatePosition: (dt) =>
         @oldX, @oldY = @getX(), @getY()
