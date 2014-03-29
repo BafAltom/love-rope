@@ -68,22 +68,12 @@ class Obstacle extends LGM.Entity
 
     updateOther: (dt) =>
 
-    intersectSegment: (segment) =>
-        -- segment is outside if one point is inside and the other outside
-        -- inside: same direction (left/right) of all segments
-        A = segment.pA
-        B = segment.pB
-        firstSegment = @segments[1]
-        segmentA_dir = firstSegment\isLeft(A)
-        segmentA_same = true
-        segmentB_dir = firstSegment\isLeft(B)
-        segmentB_same = true
-        for _, s in ipairs(@segments)
-            if (segmentA_same and s\isLeft(A) ~= segmentA_dir)
-                segmentA_same = false
-            if (segmentB_same and s\isLeft(B) ~= segmentB_dir)
-                segmentB_same = false
-        return ((segmentA_same and not segmentB_same) or (segmentB_same and not segmentA_same))
+    intersectSegment: (outSegment) =>
+        -- segment intersect obstacle iff it intersects one of its edges
+        for _, seg in ipairs(@segments)
+            if seg\intersect(outSegment)
+                return true
+        return false
 
     draw: =>
         love.graphics.setColor(255,255,255)
