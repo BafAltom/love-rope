@@ -31,7 +31,7 @@ class Obstacle extends LGM.Entity
 
     updateForces: (dt) =>
         @force = LGM.Vector(0, 0)
-        friction = @speed\scalarProduct(-friction)
+        friction = @speed\scalarProduct(-frictionFactor)
         gravity = gravityField\scalarProduct(@mass)
         @force = friction\add(gravity)
 
