@@ -16,13 +16,13 @@ class Obstacle extends LGM.Entity
     points: =>
         pList = {}
         if #@segments > 0
-            firstPoint = @segments[0].pA
-            table.insert(pList, firstPoint)
-            curPoint = firstPoint
+            firstPoint = nil
             for _, s in ipairs(@segments) do
-                assert(s.pA == curPoint)
-                table.insert(pList, s.pB)
+                assert(curPoint == nil or (s.pA.x == curPoint.x and s.pA.y == curPoint.y), "#{s.pA} \t #{curPoint}")
+                table.insert(pList, s.pB.x)
+                table.insert(pList, s.pB.y)
                 curPoint = s.pB
+        return pList
 
     update: (dt) =>
         @updateForces(dt)
