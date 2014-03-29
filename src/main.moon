@@ -13,7 +13,7 @@ love.update = (dt) ->
     --love.timer.sleep(0.1)
     ropePlayer\update dt
 
-    for i, o in ipairs(obstacles) do
+    for o in obstacles\iter() do
         o\update(dt)
 
 love.draw = ->
@@ -21,7 +21,7 @@ love.draw = ->
     love.graphics.print("FPS: "..round(love.timer.getFPS()), 10, 10)
     ropePlayer\draw()
 
-    for i, o in ipairs(obstacles) do
+    for o in obstacles\iter() do
         o\draw()
 
 love.mousepressed = (x, y, b) ->
