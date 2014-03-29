@@ -1,5 +1,6 @@
 lgm_path = "./"
 require(tostring(lgm_path) .. "lgm-entity")
+require(tostring(lgm_path) .. "lgm-entityset")
 require(tostring(lgm_path) .. "lgm-vector")
 require(tostring(lgm_path) .. "lgm-segment")
 do
@@ -14,6 +15,26 @@ do
   local e1 = Entity(5, 2)
   local e2 = Entity(-3, 10)
   assert((e1:distanceTo(e2)) == math.sqrt(8 * 8 + 8 * 8))
+end
+do
+  local es = EntitySet()
+  local e1 = Entity(1, 1)
+  local e2 = Entity(225, 130)
+  local e3 = Entity(-300, -103)
+  local closest, d = e1:getClosestOf(es:as_list())
+  assert(closest == nil and d == nil)
+  es:add(Entity(50, 25))
+  es:add(Entity(200, 150))
+  es:add(Entity(-140, 20))
+  es:add(Entity(53, -12))
+  es:add(Entity(0, 0))
+  es:add(e3)
+  closest, d = e1:getClosestOf(es:as_list())
+  assert(closest:getX() == 0 and closest:getY() == 0 and d == math.sqrt(2), tostring(closest))
+  closest, d = e2:getClosestOf(es:as_list())
+  assert(closest:getX() == 200 and closest:getY() == 150, tostring(closest))
+  local e = es:find(e3.id)
+  assert(e == e3)
 end
 do
   local v1 = Vector(10, 0)

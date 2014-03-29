@@ -17,7 +17,7 @@ do
     distanceTo = function(self, ent2)
       return lgm_distance(self.x, self.y, ent2.x, ent2.y)
     end,
-    getClosestOf = function(candidateList, maxDistance)
+    getClosestOf = function(self, candidateList, maxDistance)
       if maxDistance == nil then
         maxDistance = nil
       end

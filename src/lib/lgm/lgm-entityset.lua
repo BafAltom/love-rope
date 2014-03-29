@@ -8,7 +8,7 @@ do
       return self.currentID
     end,
     iter = function(self)
-      local i = 1
+      local i = 0
       return function()
         i = i + 1
         if i <= #self.entList then
@@ -20,11 +20,12 @@ do
       return self.entList
     end,
     add = function(self, ent)
+      assert(ent.id == nil)
       ent.id = self:nextID()
       return table.insert(self.entList, ent)
     end,
     find = function(self, id)
-      for _, e in ipairs(self.entList) do
+      for e in self:iter() do
         if e.id == id then
           return e
         end
