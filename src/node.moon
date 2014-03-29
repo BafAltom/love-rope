@@ -101,7 +101,7 @@ class Node extends LGM.Entity
         if (closestObstacle) then
             oldPos = LGM.Entity(@oldX, @oldY)
             newPos = LGM.Entity(@x, @y)
-            movementSeg = LGM.Segment(oldPos, newPos)
+            movementSeg = LGM.Segment(oldPos\toVector(), newPos\toVector())
             if (closestObstacle\intersectSegment(movementSeg)) then
                 print(@id.." intersects "..closestObstacle.id)
 
