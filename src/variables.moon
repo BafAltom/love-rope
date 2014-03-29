@@ -5,7 +5,7 @@ hScr = love.graphics.getHeight
 
 gravityField = LGM.Vector(0, 200)
 ropeSpringStrength = 1000
-frictionFactor = 1.2
+frictionFactor = 1.5
 userStrength = 800
 speedUserNode = 2000
 maxSpeedNode = 1000
