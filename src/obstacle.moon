@@ -73,7 +73,7 @@ class Obstacle extends LGM.Entity
         -- inside: same direction (left/right) of all segments
         A = segment.pA
         B = segment.pB
-        firstSegment = obstacle.segments[1]
+        firstSegment = @segments[1]
         segmentA_dir = firstSegment\isLeft(A)
         segmentA_same = true
         segmentB_dir = firstSegment\isLeft(B)
@@ -98,12 +98,12 @@ class Obstacle extends LGM.Entity
         @attractedByMouse = false
 
 defaultObstacleList = ->
-    o = Obstacle(100, 100)
     oList = EntitySet()
+    -- o = Obstacle(100, 100)
     -- table.insert(o.segments, LGM.Segment(LGM.Entity(50, 50), LGM.Entity(150, 50)))
     -- table.insert(o.segments, LGM.Segment(LGM.Entity(150, 50), LGM.Entity(150, 150)))
     -- table.insert(o.segments, LGM.Segment(LGM.Entity(150, 150), LGM.Entity(50, 150)))
     -- table.insert(o.segments, LGM.Segment(LGM.Entity(150, 150), LGM.Entity(50, 50)))
+    -- oList\add(o)
 
-    oList\add(o)
     return oList

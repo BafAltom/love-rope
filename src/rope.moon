@@ -21,7 +21,7 @@ class Rope
 
     closestNode: (x, y, maxDistance) =>
         targetEnt = LGM.Entity(x, y)
-        targetEnt\getClosestOf(@nodes\as_list(), maxDistance)
+        return targetEnt\getClosestOf(@nodes\as_list(), maxDistance)
 
     update: (dt) =>
         linksToRemove = {} -- contains pairs of node ids
@@ -31,9 +31,9 @@ class Rope
         for link in *linksToRemove do
             startN = @nodes\find(link[1])
             endN = @nodes\find(link[2])
-            rope\unlink(startN.id, endN.id)
-            linkDirection = LGM.Vector(endN.X - startN.X, endN.Y - startN.Y)
-            linkAngle = link\angle()
+            @unlink(startN.id, endN.id)
+            linkDirection = LGM.Vector(endN\getX() - startN\getX(), endN\getY() - startN\getY())
+            linkAngle = linkDirection\angle()
             startN.bloodPS\setDirection(linkAngle)
             endN.bloodPS\setDirection(linkAngle + math.pi)
             startN.bloodPS\start()
@@ -73,8 +73,8 @@ class Rope
         table.insert(pB.links, pA)
 
     unlink: (id1, id2) =>
-        A = @nodes.find(id1)
-        B = @nodes.find(id2)
+        A = @nodes\find(id1)
+        B = @nodes\find(id2)
         posA = 0
         posB = 0
 
