@@ -1,4 +1,4 @@
 love-rope
 =========
 
-A LÖVE "game" based on a rope simulation.
+A rope simulation in LÖVE and MoonScript. Maybe this will be can be turned into a game ?
