@@ -106,7 +106,8 @@ class Node extends LGM.Entity
             if isIntersecting then
                 @x = @oldX
                 @y = @oldY
-                @speed = @speed\scalarProduct(-1)
+                -- TODO: use either a global variable or a class attribute
+                @speed = @speed\scalarProduct(-1/2)
 
     draw: =>
         love.graphics.draw(@bloodPS)
