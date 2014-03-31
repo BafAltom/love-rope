@@ -102,8 +102,11 @@ class Node extends LGM.Entity
             oldPos = LGM.Entity(@oldX, @oldY)
             newPos = LGM.Entity(@x, @y)
             movementSeg = LGM.Segment(oldPos\toVector(), newPos\toVector())
-            if (closestObstacle\intersectSegment(movementSeg)) then
-                print(@id.." intersects "..closestObstacle.id)
+            isIntersecting, seg = closestObstacle\intersectSegment(movementSeg)
+            if isIntersecting then
+                @x = @oldX
+                @y = @oldY
+                @speed = @speed\scalarProduct(-1)
 
     draw: =>
         love.graphics.draw(@bloodPS)
