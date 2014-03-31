@@ -111,11 +111,6 @@ class Node extends LGM.Entity
 
     draw: =>
         love.graphics.draw(@bloodPS)
-        fillage = if @stuck then "fill" else "line"
-        love.graphics.setColor(255,255,255)
-        love.graphics.circle(fillage, @getX(), @getY(), @mass)
-        love.graphics.setColor(255,0,0) -- ghost
-        love.graphics.circle("line", @oldX, @oldY, @mass)
         love.graphics.setColor(255,255,255)
         for i, otherNode in ipairs(@links)
             distance = LGM.distance(@x, @y, otherNode.x, otherNode.y)
@@ -123,7 +118,13 @@ class Node extends LGM.Entity
             stretchFactor = math.max(0, stretchFactor)
             stretchFactor = math.min(1, stretchFactor)
             love.graphics.setColor(255, 255 * (1 - stretchFactor), 255 * (1 - stretchFactor))
+            love.graphics.setLineWidth(3)
             love.graphics.line(@x, @y, otherNode.x, otherNode.y)
+        if @stuck
+            love.graphics.setColor(255,255,255)
+            love.graphics.circle("fill", @getX(), @getY(), @mass)
+            love.graphics.setColor(255,0,0) -- ghost
+            love.graphics.circle("line", @oldX, @oldY, @mass)
         if(DEBUG) then
             love.graphics.print(@id, @x, @y)
 
