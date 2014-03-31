@@ -69,11 +69,12 @@ class Obstacle extends LGM.Entity
     updateOther: (dt) =>
 
     intersectSegment: (outSegment) =>
+        -- return true/false and, if true, the intersected segment
         -- segment intersect obstacle iff it intersects one of its edges
         for _, seg in ipairs(@segments)
             if seg\intersect(outSegment)
-                return true
-        return false
+                return true, seg
+        return false, nil
 
     draw: =>
         love.graphics.setColor(255,255,255)
